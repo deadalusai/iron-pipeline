@@ -97,6 +97,12 @@
                     }
                 }
             ]
+        },
+        {
+            "taskName": "doc",
+            "args": [ "doc", "--no-deps" ],
+            "showOutput": "always",
+            "isTestCommand": false
         }
     ]
 }
