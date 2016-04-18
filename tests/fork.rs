@@ -9,7 +9,7 @@ use iron::method::{ Method };
 use iron_pipeline::prelude::*;
 
 #[test]
-fn verify_fork_when_behaviour() {
+fn test_fork_when() {
     
     // build a pipeline which forks on HEAD requests
     let mut pipeline = Pipeline::new();
@@ -32,7 +32,7 @@ fn verify_fork_when_behaviour() {
 }
 
 #[test]
-fn verify_fork_when_path_behaviour() {
+fn test_fork_when_path() {
     
     // build a pipeline which forks when the path starts with `/api/v2`
     let mut pipeline = Pipeline::new();
