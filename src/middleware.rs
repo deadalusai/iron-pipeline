@@ -114,7 +114,7 @@ impl <P> Fork<P>
 }
 
 impl <P> PipelineMiddleware for Fork<P>
-    where P: Fn(&mut Request) -> bool,
+    where P: Fn(&Request) -> bool,
           P: Send + Sync
 {
     /// Invokes the sub pipeline when the predicate P returns **true** for the request.
