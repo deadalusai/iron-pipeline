@@ -5,3 +5,4 @@ authors = ["Benjamin Fox <deadalus.ai@gmail.com>"]
 
 [dependencies]
 iron = "0.3.0"
+url = "0.5"
