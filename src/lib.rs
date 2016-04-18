@@ -70,8 +70,8 @@ extern crate iron;
 
 pub mod middleware;
 
-/// Includes the Pipeline and a number of middlewares which may be useful
-mod prelude {
+/// Includes the Pipeline type and all types in the `middleware` module.
+pub mod prelude {
     pub use ::{ Pipeline };
     pub use middleware::*;
 }
