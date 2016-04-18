@@ -42,7 +42,9 @@ use ::{ Pipeline, PipelineMiddleware, PipelineNext };
 ///     Ok(Response::with((status::Ok, "Hello from iron-pipeline")))
 /// }))
 /// ```
-pub struct Process<F>(pub F);
+pub struct Process<F>(pub F)
+    where F: Fn(&mut Request) -> IronResult<Response>,
+          F: Send + Sync;
 
 impl <F> PipelineMiddleware for Process<F>
     where F: Fn(&mut Request) -> IronResult<Response>,
@@ -67,7 +69,9 @@ impl <F> PipelineMiddleware for Process<F>
 ///     response
 /// }))
 /// ```
-pub struct ProcessNext<F>(pub F);
+pub struct ProcessNext<F>(pub F)
+    where F: Fn(&mut Request, PipelineNext) -> IronResult<Response>,
+          F: Send + Sync;
 
 impl <F> PipelineMiddleware for ProcessNext<F>
     where F: Fn(&mut Request, PipelineNext) -> IronResult<Response>,
