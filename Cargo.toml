@@ -2,6 +2,9 @@
 name = "iron-pipeline"
 version = "0.1.0"
 authors = ["Benjamin Fox <deadalus.ai@gmail.com>"]
+description = "Simple pipelined request handler for the Iron framework"
+repository = "https://github.com/deadalusai/iron-pipeline"
+license = "MIT"
 
 [dependencies]
 iron = "0.3.0"
