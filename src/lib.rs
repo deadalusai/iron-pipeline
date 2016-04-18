@@ -71,10 +71,11 @@ extern crate url;
 
 pub mod middleware;
 
-/// Includes the Pipeline type and all types in the `middleware` module.
+/// Includes the Pipeline type and all middleware types in the `middleware` module.
 pub mod prelude {
     pub use ::{ Pipeline };
-    pub use middleware::*;
+    pub use middleware::fork::{ Fork };
+    pub use middleware::process::{ Process, ProcessNext };
 }
 
 use std::error;
