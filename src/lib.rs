@@ -14,38 +14,40 @@
 //! 
 //! Unlike `Chain`, middleware is always executed in the order in which it was registered.
 //! 
-//! # Example
+//! # Examples
 //!
 //! This example introduces two helper processors: `Process` and `ProcessNext`. 
 //! 
 //! ```rust
-//! use iron::status;
+//! # extern crate iron;
+//! # extern crate iron_pipeline;
 //! use iron::prelude::*;
+//! use iron::status;
 //! use iron_pipeline::prelude::*;
 //! 
-//! fn main() {
-//!     
-//!     let pipeline = Pipeline::new();
-//!     
-//!     // Preprocess example
-//!     pipeline.add(ProcessNext(|req, next| {
-//!         preprocess_request(req);
-//!         next.process(req)
-//!     }))
-//!     
-//!     // Postprocess example
-//!     pipeline.add(ProcessNext(|req, next| {
-//!         let response = next.process(req);
-//!         postprocess_response(&mut response);
-//!         response
-//!     }))
-//!     
-//!     // "Terminal handler" example
-//!     pipeline.add(Process(|req| {
-//!         Ok(Response::with((status::Ok, "Hello from iron-pipeline")))
-//!     }))
+//! # fn log_request(_: &Request) {}
+//! # fn log_response(_: &IronResult<Response>) {}
 //!
-//!     Iron::new(pipeline).http("localhost:1337").unwrap();
+//! fn main() {
+//!     let mut pipeline = Pipeline::new();
+//!     
+//!     // "Middleware" example
+//!     pipeline.add(ProcessNext(|req, next| {
+//!         log_request(req);
+//!         let res = next.process(req);
+//!         log_response(&res);
+//!         res
+//!     }));
+//!     
+//!     // "Handler" example
+//!     pipeline.add(Process(|req| {
+//!         Ok(Response::with((
+//!             status::Ok,
+//!             "Hello from iron-pipeline"
+//!         )))
+//!     }));
+//!
+//!     Iron::new(pipeline); // etc...
 //! }
 //! ```
 //!
@@ -57,7 +59,7 @@
 //! 
 //! ```toml
 //! [dependencies]
-//! iron-pipeline = "0.1"
+//! iron-pipeline = { git = "https://github.com/deadalusai/iron-pipeline" }
 //! ```
 //! 
 //! and the following to your crate root:
@@ -112,11 +114,25 @@ impl <T> PipelineMiddleware for T
 ///
 /// # Examples
 ///
-/// ```
+/// ```rust
+/// # extern crate iron;
+/// # extern crate iron_pipeline;
+/// # fn main() {
+/// # use iron::prelude::*;
+/// # use iron::status;
+/// # use iron_pipeline::prelude::*;
+/// # use iron_pipeline::{ PipelineMiddleware, PipelineNext };
+/// # struct MyCustomRequestPreprocessor;
+/// # impl PipelineMiddleware for MyCustomRequestPreprocessor {
+/// #     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
+/// #         next.process(req)
+/// #     }
+/// # }
 /// let mut pipeline = Pipeline::new();
 /// pipeline.add(MyCustomRequestPreprocessor);
 /// pipeline.add(Process(|req| Ok(Response::with((status::Ok, "Hello, world")))));
-/// Iron::new(pipeline) // Etc
+/// Iron::new(pipeline); // Etc...
+/// # }
 /// ```
 pub struct Pipeline {
     handlers: Vec<Box<PipelineMiddleware>>

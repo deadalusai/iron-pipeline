@@ -17,13 +17,23 @@ impl <P> Fork<P>
     /// The `predicate` is executed on every request and determines whether to delegate to the sub pipeline.
     /// The `pipeline_builder` is used to construct the sub pipeline, and is executed immediately.
     ///
-    /// For example, a sub pipeline which handles all "Post" requests:
+    /// # Examples
+    /// A sub pipeline which handles all "Post" requests:
     ///
-    /// ```rustc
+    /// ```rust
+    /// # extern crate iron;
+    /// # extern crate iron_pipeline;
+    /// # use iron::prelude::*;
+    /// # use iron::method::Method;
+    /// # use iron_pipeline::prelude::*;
+    /// # fn main() {
+    /// # let mut pipeline = Pipeline::new();
     /// pipeline.add(Fork::when(|req| req.method == Method::Post, |sub_pipeline| {
-    ///     sub_pipeline.add(Middleware);
-    ///     sub_pipeline.add(Process(...));
+    ///     sub_pipeline.add(Process(|req| {
+    ///         Ok(Response::with("Hello from iron-pipeline"))
+    ///     }));
     /// }))
+    /// # }
     /// ```
     pub fn when<B>(predicate: P, pipeline_builder: B) -> Fork<P>
         where B: FnOnce(&mut Pipeline)
@@ -59,14 +69,26 @@ impl Fork<ForkOnPath> {
     /// The `path` is compared against the url path on every request and determines whether to delegate to the sub pipeline. 
     /// The `pipeline_builder` is used to construct the sub pipeline, and is executed immediately.
     ///
-    /// For example, a sub pipeline which handles all requests to "/api/v2":
+    /// # Examples
+    /// A sub pipeline which handles all requests to "/api/v2":
     ///
-    /// ```rustc
+    /// ```rust
+    /// # extern crate iron;
+    /// # extern crate iron_pipeline;
+    /// # use iron::prelude::*;
+    /// # use iron_pipeline::prelude::*;
+    /// # fn main() {
+    /// # let mut pipeline = Pipeline::new();
     /// pipeline.add(Fork::when_path("/api/v2", |sub_pipeline| {
-    ///     sub_pipeline.add(Middleware);
-    ///     sub_pipeline.add(Process(...));
+    ///     sub_pipeline.add(Process(|req| {
+    ///         Ok(Response::with("Hello from iron-pipeline"))
+    ///     }));
     /// }))
+    /// # }
     /// ```
+    ///
+    /// #Panics
+    /// Panics when passed an invalid path string. Path should be of the form `/hello/world`.
     pub fn when_path<P, B>(path: P, pipeline_builder: B) -> Fork<ForkOnPath>
         where P: AsRef<str>,
               B: FnOnce(&mut Pipeline)
