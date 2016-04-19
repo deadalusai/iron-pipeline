@@ -14,16 +14,16 @@ use ::{ PipelineMiddleware, PipelineNext };
 /// # use iron_pipeline::prelude::*;
 /// # fn main() {
 /// # let mut pipeline = Pipeline::new();
-/// pipeline.add(Process(|req: &mut Request| {
+/// pipeline.add(Handle(|req: &mut Request| {
 ///     Ok(Response::with((status::Ok, "Hello from iron-pipeline")))
 /// }))
 /// # }
 /// ```
-pub struct Process<F>(pub F)
+pub struct Handle<F>(pub F)
     where F: Fn(&mut Request) -> IronResult<Response>,
           F: Send + Sync;
 
-impl <F> PipelineMiddleware for Process<F>
+impl <F> PipelineMiddleware for Handle<F>
     where F: Fn(&mut Request) -> IronResult<Response>,
           F: Send + Sync
 {
@@ -32,7 +32,7 @@ impl <F> PipelineMiddleware for Process<F>
     }
 }
 
-/// Container for a pipeline processor function which may optionally invoke the
+/// Container for a pipeline middleware function which may optionally invoke the
 /// next middleware in the pipeline via `next.process(req)`, or create a response itself.
 ///
 /// # Examples
@@ -47,7 +47,7 @@ impl <F> PipelineMiddleware for Process<F>
 /// # fn log_response(_: &IronResult<Response>) {}
 /// # fn main() {
 /// # let mut pipeline = Pipeline::new();
-/// pipeline.add(ProcessNext(|req: &mut Request, next: PipelineNext| {
+/// pipeline.add(HandleNext(|req: &mut Request, next: PipelineNext| {
 ///     log_request(req);
 ///     let res = next.process(req);
 ///     log_response(&res);
@@ -55,11 +55,11 @@ impl <F> PipelineMiddleware for Process<F>
 /// }))
 /// # }
 /// ```
-pub struct ProcessNext<F>(pub F)
+pub struct HandleNext<F>(pub F)
     where F: Fn(&mut Request, PipelineNext) -> IronResult<Response>,
           F: Send + Sync;
 
-impl <F> PipelineMiddleware for ProcessNext<F>
+impl <F> PipelineMiddleware for HandleNext<F>
     where F: Fn(&mut Request, PipelineNext) -> IronResult<Response>,
           F: Send + Sync
 {

@@ -8,12 +8,12 @@ use iron::{ Headers, status };
 use iron_pipeline::prelude::*;
 
 #[test]
-fn test_process() {
+fn test_handle() {
     
     // build a simple pipeline 
     let mut pipeline = Pipeline::new();
     
-    pipeline.add(Process(|_| {
+    pipeline.add(Handle(|_| {
         Ok(Response::with((status::Ok, "Hello, world")))
     }));
     
@@ -25,18 +25,18 @@ fn test_process() {
 }
 
 #[test]
-fn test_process_next() {
+fn test_handle_next() {
     
     // build a simple pipeline, with a middleware which modifies the response status code
     let mut pipeline = Pipeline::new();
     
-    pipeline.add(ProcessNext(|req, next| {
+    pipeline.add(HandleNext(|req, next| {
         let mut response = next.process(req).unwrap();
         response.status = Some(status::InternalServerError); // Overwrite the status
         Ok(response)
     }));
     
-    pipeline.add(Process(|_| {
+    pipeline.add(Handle(|_| {
         Ok(Response::with(status::Ok))
     }));
     

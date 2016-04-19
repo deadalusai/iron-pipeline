@@ -9,14 +9,14 @@
 //! 
 //! 1. Create and return a response
 //! 2. Modify the request
-//! 3. Delegate to the next processor in the pipeline 
-//! 4. Modify the response created by another processor
+//! 3. Delegate to the next middleware in the pipeline 
+//! 4. Modify the response created by another middleware
 //! 
 //! Unlike `Chain`, middleware is always executed in the order in which it was registered.
 //! 
 //! # Examples
 //!
-//! This example introduces two helper processors: `Process` and `ProcessNext`. 
+//! This example introduces two helper middlewares: `Handle` and `HandleNext`. 
 //! 
 //! ```rust
 //! # extern crate iron;
@@ -32,7 +32,7 @@
 //!     let mut pipeline = Pipeline::new();
 //!     
 //!     // "Middleware" example
-//!     pipeline.add(ProcessNext(|req, next| {
+//!     pipeline.add(HandleNext(|req, next| {
 //!         log_request(req);
 //!         let res = next.process(req);
 //!         log_response(&res);
@@ -40,7 +40,7 @@
 //!     }));
 //!     
 //!     // "Handler" example
-//!     pipeline.add(Process(|req| {
+//!     pipeline.add(Handle(|req| {
 //!         Ok(Response::with((
 //!             status::Ok,
 //!             "Hello from iron-pipeline"
@@ -52,8 +52,6 @@
 //! ```
 //!
 //! # Usage
-//! 
-//! **TODO** Add github URL
 //! 
 //! This crate may be used by adding `iron-pipeline` to the dependencies in your project's `Cargo.toml`:
 //! 
@@ -77,7 +75,7 @@ pub mod middleware;
 pub mod prelude {
     pub use ::{ Pipeline };
     pub use middleware::fork::{ Fork };
-    pub use middleware::process::{ Process, ProcessNext };
+    pub use middleware::handle::{ Handle, HandleNext };
 }
 
 use std::error;
@@ -88,8 +86,8 @@ use iron::prelude::*;
 use iron::middleware::{ Handler };
 
 /// Trait which defines middleware within a pipeline.
-/// Implementors of this trait must call `next.process(...)` in order to pass
-/// control to the next processor in the pipeline.
+/// Implementors of this trait must call `next.handle(...)` in order to pass
+/// control to the next middleware in the pipeline.
 pub trait PipelineMiddleware: Send + Sync {
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response>;
 }
@@ -106,11 +104,11 @@ impl <T> PipelineMiddleware for T
 }
 
 /// Iron middleware for implementing a simple forward-only pipeline.
-/// When a request is received each handler is invoked in the order
+/// When a request is received each middleware is invoked in the order
 /// in which they were registered.
 ///
-/// Each handler may modify the request at will. It may then complete the request
-/// immediately or invoke to the next handler in the pipeline.
+/// Each middleware may modify the request at will. It may then complete the request
+/// immediately or invoke to the next middleware in the pipeline.
 ///
 /// # Examples
 ///
@@ -130,12 +128,12 @@ impl <T> PipelineMiddleware for T
 /// # }
 /// let mut pipeline = Pipeline::new();
 /// pipeline.add(MyCustomRequestPreprocessor);
-/// pipeline.add(Process(|req| Ok(Response::with((status::Ok, "Hello, world")))));
+/// pipeline.add(Handle(|req| Ok(Response::with((status::Ok, "Hello, world")))));
 /// Iron::new(pipeline); // Etc...
 /// # }
 /// ```
 pub struct Pipeline {
-    handlers: Vec<Box<PipelineMiddleware>>
+    middlewares: Vec<Box<PipelineMiddleware>>
 }
 
 /// Handle used to invoke the next handler in a pipeline
@@ -153,7 +151,7 @@ impl Pipeline {
     /// Construct a new, empty request pipeline.
     pub fn new() -> Pipeline {
         Pipeline {
-            handlers: Vec::new()
+            middlewares: Vec::new()
         }
     }
 
@@ -161,7 +159,7 @@ impl Pipeline {
     pub fn add<P>(&mut self, handler: P)
         where P: PipelineMiddleware + 'static
     {
-        self.handlers.push(Box::new(handler));
+        self.middlewares.push(Box::new(handler));
     }
 
     /// Invoke the pipeline handler at the given index. The handler is provided
@@ -170,16 +168,17 @@ impl Pipeline {
     fn invoke_handler(&self, index: usize, req: &mut Request) -> IronResult<Response> {
 
         // Locate the next handler and invoke it
-        if let Some(handler) = self.handlers.get(index) {
-            return handler.process(req, PipelineNext(self, index + 1));
+        if let Some(middleware) = self.middlewares.get(index) {
+            return middleware.process(req, PipelineNext(self, index + 1));
         }
 
-        // No more handlers? Return an error to the client
+        // No more middlewares? Return an error to the client
         Err(IronError::new(Error::NoHandler, status::InternalServerError))
     }
 }
 
 impl Handler for Pipeline {
+    /// Invokes the request pipeline
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         self.invoke_handler(0, req)
     }
@@ -189,8 +188,8 @@ impl Handler for Pipeline {
 #[derive(Debug, PartialEq)]
 pub enum Error {
 
-    /// Raised if there are no further handlers in the pipeline
-    /// available to process the request
+    /// Raised if there are no further middlewares in the pipeline
+    /// available to handle the request
     NoHandler
 }
 

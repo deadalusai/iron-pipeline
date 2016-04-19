@@ -5,7 +5,7 @@ use url::parse_path;
 
 use ::{ Pipeline, PipelineMiddleware, PipelineNext };
 
-/// Processor which optionally delegates processing to a sub pipeline
+/// Middleware which optionally delegates to a sub pipeline
 /// based on a predicate function executed against each request.
 pub struct Fork<P>(Pipeline, P);
 
@@ -29,7 +29,7 @@ impl <P> Fork<P>
     /// # fn main() {
     /// # let mut pipeline = Pipeline::new();
     /// pipeline.add(Fork::when(|req| req.method == Method::Post, |sub_pipeline| {
-    ///     sub_pipeline.add(Process(|req| {
+    ///     sub_pipeline.add(Handle(|req| {
     ///         Ok(Response::with("Hello from iron-pipeline"))
     ///     }));
     /// }))
@@ -80,7 +80,7 @@ impl Fork<ForkOnPath> {
     /// # fn main() {
     /// # let mut pipeline = Pipeline::new();
     /// pipeline.add(Fork::when_path("/api/v2", |sub_pipeline| {
-    ///     sub_pipeline.add(Process(|req| {
+    ///     sub_pipeline.add(Handle(|req| {
     ///         Ok(Response::with("Hello from iron-pipeline"))
     ///     }));
     /// }))
