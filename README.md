@@ -20,8 +20,11 @@ Unlike `Chain`, middleware is always executed in the exact order in which it was
 
 # The PipelineMiddleware trait
 
-The `PipelineMiddleware` trait is implemented for any middleware you want to run in a pipeline. The trait is
-nearly identical to `iron::middleware::Handler` trait, but for the addition of the `next` parameter.
+The `PipelineMiddleware` trait is implemented for any middleware you want to run in a pipeline.
+
+The trait is nearly identical in behaviour to the `iron::middleware::Handler` trait as it accepts an `&mut Request` and returns
+an `IronResult<Response>`. However it also accepts a `PipelineNext` parameter, which allows it to optionally invoke the next
+middleware in the pipeline.
 
 For example, a simple HTTPS redirect middleware:
 
@@ -42,13 +45,20 @@ impl PipelineMiddleware for HttpsRedirect {
 ```
 
 Additionally, `PipelineMiddleware` is automatically implemented for all types which implement `Handler`
-so you can easily add other Iron-compatible handlers to your pipeline.
+so you can easily add other Iron-compatible handlers like `Router` to your pipeline.
 
-**Note:** Because the `Handler` trait does not understand the concept of "next" middleware, it is 
+**Note:** Because the `Handler` trait cannot invoke the next middleware, it is 
 generally only useful to put such handlers at the _end_ of a pipeline or sub-pipeline.
 
 # Examples
+
 See the [examples directory](examples).
+
+You can run the examples with the `cargo run --example` command, e.g.
+
+```bash
+$ cargo run --example complex
+``` 
 
 
 # Usage
