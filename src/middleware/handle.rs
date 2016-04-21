@@ -20,12 +20,10 @@ use ::{ PipelineMiddleware, PipelineNext };
 /// # }
 /// ```
 pub struct Handle<F>(pub F)
-    where F: Fn(&mut Request) -> IronResult<Response>,
-          F: Send + Sync;
+    where F: Send + Sync + Fn(&mut Request) -> IronResult<Response>;
 
 impl <F> PipelineMiddleware for Handle<F>
-    where F: Fn(&mut Request) -> IronResult<Response>,
-          F: Send + Sync
+    where F: Send + Sync + Fn(&mut Request) -> IronResult<Response>
 {
     fn process(&self, req: &mut Request, _: PipelineNext) -> IronResult<Response> {
         (self.0)(req)
@@ -56,12 +54,10 @@ impl <F> PipelineMiddleware for Handle<F>
 /// # }
 /// ```
 pub struct HandleNext<F>(pub F)
-    where F: Fn(&mut Request, PipelineNext) -> IronResult<Response>,
-          F: Send + Sync;
+    where F: Send + Sync + Fn(&mut Request, PipelineNext) -> IronResult<Response>;
 
 impl <F> PipelineMiddleware for HandleNext<F>
-    where F: Fn(&mut Request, PipelineNext) -> IronResult<Response>,
-          F: Send + Sync
+    where F: Send + Sync + Fn(&mut Request, PipelineNext) -> IronResult<Response> 
 {
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
         (self.0)(req, next)

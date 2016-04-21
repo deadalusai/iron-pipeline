@@ -6,12 +6,11 @@ use url::parse_path;
 use ::{ Pipeline, PipelineMiddleware, PipelineNext };
 
 /// Middleware which optionally delegates to a sub pipeline
-/// based on a predicate function executed against each request.
+/// based on a predicate P executed against each request.
 pub struct Fork<P>(Pipeline, P);
 
 impl <P> Fork<P>
-    where P: Fn(&Request) -> bool,
-          P: Send + Sync
+    where P: Send + Sync + Fn(&Request) -> bool
 {
     /// Construct a new pipeline fork.
     /// The `predicate` is executed on every request and determines whether to delegate to the sub pipeline.
@@ -45,8 +44,7 @@ impl <P> Fork<P>
 }
 
 impl <P> PipelineMiddleware for Fork<P>
-    where P: Fn(&Request) -> bool,
-          P: Send + Sync
+    where P: Send + Sync + Fn(&Request) -> bool
 {
     /// Invokes the sub pipeline when the predicate P returns **true** for the request.
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
