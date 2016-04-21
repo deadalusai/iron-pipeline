@@ -4,6 +4,11 @@ Simple pipelined request handler for the Iron framework. Inspired by similar API
 the new ASP.NET Core 1.0 framework, which in turn is inspired by Microsoft's OWIN implementation,
 node.js and other web frameworks.
 
+# Documentation
+
+API documentation can be found [here](http://deadalusai.github.io/iron-pipeline/).
+
+
 # About
 
 Under `iron-pipeline` every request is sent through a daisy chain of _middlewares_, each of which may

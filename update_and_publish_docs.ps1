@@ -56,7 +56,7 @@ function prompt-user {
 # Update the cargo docs which will be checked out (as gh-pages branch) in a different directory
 
 $gh_pages_path = '..\iron-pipeline-gh-pages'
-$gh_pages_index_html = '<meta http-equiv=refresh content="0;url=gol/index.html">'
+$gh_pages_index_html = '<meta http-equiv=refresh content="0;url=iron_pipeline/index.html">'
 
 push-location (split-path -parent $PSCommandPath)
 try {
