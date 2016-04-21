@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `HandleNext` struct in crate `iron_pipeline`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, HandleNext">
+
+    <title>iron_pipeline::middleware::handle::HandleNext - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>handle</a></p><script>window.sidebarCurrent = {name: 'HandleNext', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>handle</a>::<wbr><a class='struct' href=''>HandleNext</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-73' class='srclink' href='../../../src/iron_pipeline/src/middleware/handle.rs.html#56-57' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct HandleNext&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, <a class='struct' href='../../../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span>(pub F);</pre><div class='docblock'><p>Container for a pipeline middleware function which may optionally invoke the
+next middleware in the pipeline via <code>next.process(req)</code>, or create a response itself.</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='ident'>pipeline</span>.<span class='ident'>add</span>(<span class='ident'>HandleNext</span>(<span class='op'>|</span><span class='ident'>req</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>, <span class='ident'>next</span>: <span class='ident'>PipelineNext</span><span class='op'>|</span> {
+    <span class='ident'>log_request</span>(<span class='ident'>req</span>);
+    <span class='kw'>let</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='ident'>next</span>.<span class='ident'>process</span>(<span class='ident'>req</span>);
+    <span class='ident'>log_response</span>(<span class='kw-2'>&amp;</span><span class='ident'>res</span>);
+    <span class='ident'>res</span>
+}))</pre>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;F&gt; <a class='trait' href='../../../iron_pipeline/trait.PipelineMiddleware.html' title='iron_pipeline::PipelineMiddleware'>PipelineMiddleware</a> for <a class='struct' href='../../../iron_pipeline/middleware/handle/struct.HandleNext.html' title='iron_pipeline::middleware::handle::HandleNext'>HandleNext</a>&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, <a class='struct' href='../../../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span></code></h3><div class='impl-items'><h4 id='method.process' class='method'><code>fn <a href='../../../iron_pipeline/trait.PipelineMiddleware.html#tymethod.process' class='fnname'>process</a>(&amp;self, req: &amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, next: <a class='struct' href='../../../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "iron_pipeline";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

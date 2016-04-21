@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `PipelineMiddleware` trait in crate `iron_pipeline`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, PipelineMiddleware">
+
+    <title>iron_pipeline::PipelineMiddleware - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>iron_pipeline</a></p><script>window.sidebarCurrent = {name: 'PipelineMiddleware', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>iron_pipeline</a>::<wbr><a class='trait' href=''>PipelineMiddleware</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-93' class='srclink' href='../src/iron_pipeline/src/lib.rs.html#91-93' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait PipelineMiddleware: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> {
+    fn <a href='#tymethod.process' class='fnname'>process</a>(&amp;self, req: &amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, next: <a class='struct' href='../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;;
+}</pre><div class='docblock'><p>Trait which defines middleware within a pipeline.
+Implementors of this trait must call <code>next.handle(...)</code> in order to pass
+control to the next middleware in the pipeline.</p>
+</div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.process' class='method stab '><code>fn <a href='#tymethod.process' class='fnname'>process</a>(&amp;self, req: &amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, next: <a class='struct' href='../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</code></h3></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl&lt;P&gt; PipelineMiddleware for <a class='struct' href='../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;P&gt; <span class='where'>where P: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;<a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></span></code></li>
+<li><code>impl PipelineMiddleware for <a class='struct' href='../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;ForkOnPath&gt;</code></li>
+<li><code>impl&lt;F&gt; PipelineMiddleware for <a class='struct' href='../iron_pipeline/middleware/handle/struct.Handle.html' title='iron_pipeline::middleware::handle::Handle'>Handle</a>&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span></code></li>
+<li><code>impl&lt;F&gt; PipelineMiddleware for <a class='struct' href='../iron_pipeline/middleware/handle/struct.HandleNext.html' title='iron_pipeline::middleware::handle::HandleNext'>HandleNext</a>&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, <a class='struct' href='../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span></code></li>
+</ul><script type="text/javascript" async
+                         src="../implementors/iron_pipeline/trait.PipelineMiddleware.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "iron_pipeline";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
