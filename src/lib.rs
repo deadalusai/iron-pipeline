@@ -74,7 +74,7 @@ pub mod middleware;
 /// Includes the Pipeline type and all middleware types in the `middleware` module.
 pub mod prelude {
     pub use ::{ Pipeline };
-    pub use middleware::fork::{ Fork };
+    pub use middleware::fork::{ fork_when, fork_when_path };
     pub use middleware::handle::{ Handle, HandleNext };
 }
 

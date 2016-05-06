@@ -41,14 +41,14 @@ fn main() {
     }));
     
     // Example of forking on a predicate 
-    pipeline.add(Fork::when(|req| request_has_header(req, "X-ApiVersion", b"2009-01-01"), |v1| {
+    pipeline.add(fork_when(|req| request_has_header(req, "X-ApiVersion", b"2009-01-01"), |v1| {
         // This middleware runs only on requests with the correct X-ApiVersion header
         v1.add(WwwAuthenticate { username: "v1", password: "password" });
         v1.add(ApiV1Handler);
     }));
 
     // Example of forking on path prefix
-    pipeline.add(Fork::when_path("/api/v2", |v2| {
+    pipeline.add(fork_when_path("/api/v2", |v2| {
         // This middleware runs only on requests where the path starts with /api/v2/*
         v2.add(WwwAuthenticate { username: "v2", password: "password" });
         v2.add(ApiV2Handler);
