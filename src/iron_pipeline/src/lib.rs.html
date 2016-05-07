@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
-    
 
     
     
@@ -254,36 +253,36 @@
 <span class='doccomment'>//! Simple pipelined request handler for the Iron framework. Inspired by similar APIs used in</span>
 <span class='doccomment'>//! the new ASP.NET Core 1.0 framework, which in turn is inspired by Microsoft&#39;s OWIN implementation,</span>
 <span class='doccomment'>//! node.js and other web frameworks.</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! # About</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! Under `iron-pipeline`, every request is sent through a daisy chain of _middlewares_, each of which may</span>
 <span class='doccomment'>//! optionally:</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! 1. Create and return a response</span>
 <span class='doccomment'>//! 2. Modify the request</span>
-<span class='doccomment'>//! 3. Delegate to the next middleware in the pipeline </span>
+<span class='doccomment'>//! 3. Delegate to the next middleware in the pipeline</span>
 <span class='doccomment'>//! 4. Modify the response created by another middleware</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! Unlike `Chain`, middleware is always executed in the order in which it was registered.</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! # Examples</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! This example introduces two helper middlewares: `Handle` and `HandleNext`. </span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//! This example introduces two helper middlewares: `Handle` and `HandleNext`.</span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
 <span class='doccomment'>//! # extern crate iron;</span>
 <span class='doccomment'>//! # extern crate iron_pipeline;</span>
 <span class='doccomment'>//! use iron::prelude::*;</span>
 <span class='doccomment'>//! use iron::status;</span>
 <span class='doccomment'>//! use iron_pipeline::prelude::*;</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! # fn log_request(_: &amp;Request) {}</span>
 <span class='doccomment'>//! # fn log_response(_: &amp;IronResult&lt;Response&gt;) {}</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! fn main() {</span>
 <span class='doccomment'>//!     let mut pipeline = Pipeline::new();</span>
-<span class='doccomment'>//!     </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//!     // &quot;Middleware&quot; example</span>
 <span class='doccomment'>//!     pipeline.add(HandleNext(|req, next| {</span>
 <span class='doccomment'>//!         log_request(req);</span>
@@ -291,7 +290,7 @@
 <span class='doccomment'>//!         log_response(&amp;res);</span>
 <span class='doccomment'>//!         res</span>
 <span class='doccomment'>//!     }));</span>
-<span class='doccomment'>//!     </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//!     // &quot;Handler&quot; example</span>
 <span class='doccomment'>//!     pipeline.add(Handle(|req| {</span>
 <span class='doccomment'>//!         Ok(Response::with((</span>
@@ -305,16 +304,16 @@
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! # Usage</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! This crate may be used by adding `iron-pipeline` to the dependencies in your project&#39;s `Cargo.toml`:</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```toml</span>
 <span class='doccomment'>//! [dependencies]</span>
 <span class='doccomment'>//! iron-pipeline = { git = &quot;https://github.com/deadalusai/iron-pipeline&quot; }</span>
 <span class='doccomment'>//! ```</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! and the following to your crate root:</span>
-<span class='doccomment'>//! </span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
 <span class='doccomment'>//! extern crate iron_pipeline;</span>
 <span class='doccomment'>//! ```</span>

@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `fork` mod in crate `iron_pipeline`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, fork">
+    <meta name="description" content="API documentation for the Rust `ForkPredicate` trait in crate `iron_pipeline`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ForkPredicate">
 
-    <title>iron_pipeline::middleware::fork - Rust</title>
+    <title>iron_pipeline::middleware::fork::ForkPredicate - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a></p><script>window.sidebarCurrent = {name: 'fork', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+        <p class='location'><a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>fork</a></p><script>window.sidebarCurrent = {name: 'ForkPredicate', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -41,23 +41,25 @@
         </form>
     </nav>
 
-    <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Module <a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a class='mod' href=''>fork</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>fork</a>::<wbr><a class='trait' href=''>ForkPredicate</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-8' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#1-131' title='goto source code'>[src]</a></span></h1>
-<h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
-<table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Fork.html'
-                               title='iron_pipeline::middleware::fork::Fork'>Fork</a></td>
-                        <td class='docblock short'>
-                             <p>Middleware which optionally delegates to a sub pipeline
-based on some predicate applied to each request.</p>
-                        </td>
-                    </tr>
-                </table></section>
+        </span><a id='src-14' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#9-11' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait ForkPredicate {
+    fn <a href='#tymethod.should_fork' class='fnname'>should_fork</a>(&amp;self, req: &amp;<a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>;
+}</pre><div class='docblock'><p>Internal trait used to implement the predicate on a fork operation.</p>
+</div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.should_fork' class='method stab '><code>fn <a href='#tymethod.should_fork' class='fnname'>should_fork</a>(&amp;self, req: &amp;<a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl <a class='trait' href='../../../iron_pipeline/middleware/fork/trait.ForkPredicate.html' title='iron_pipeline::middleware::fork::ForkPredicate'>ForkPredicate</a> for <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></li>
+</ul><script type="text/javascript" async
+                              src="../../../implementors/iron_pipeline/middleware/fork/trait.ForkPredicate.js">
+                      </script></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
