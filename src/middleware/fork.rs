@@ -5,38 +5,11 @@ use url::parse_path;
 
 use ::{ Pipeline, PipelineMiddleware, PipelineNext };
 
-/// Internal trait used to implement the predicate on a fork operation.
-pub trait ForkPredicate {
-    fn should_fork(&self, req: &Request) -> bool;
-}
-
-/// Fork when the request matches a predicate
-impl <P> ForkPredicate for P
-    where P: Send + Sync + Fn(&Request) -> bool
-{
-    fn should_fork(&self, req: &Request) -> bool {
-        (self)(req)
-    }
-}
-
-/// Fork when the request Url matches a hard-coded path prefix (encoded as a vector of path segments).
-impl ForkPredicate for Vec<String> {
-    fn should_fork(&self, req: &Request) -> bool {
-        slice_starts_with(&req.url.path, self)
-    }
-}
-
-fn slice_starts_with<A, B>(input: &[A], prefix: &[B]) -> bool
-    where A: PartialEq<B>
-{
-    input.iter().zip(prefix).all(|(a, b)| a == b)
-}
-
 /// Middleware which optionally delegates to a sub pipeline
-/// based on some predicate P applied to each request.
-pub struct Fork<P>(Pipeline, P);
+/// based on some predicate applied to each request.
+pub struct Fork(Pipeline, Box<Fn(&Request) -> bool + Send + Sync>);
 
-impl Fork<()> {
+impl Fork {
 
     /// Construct a new pipeline fork.
     /// The `predicate` is executed on every request and determines whether to delegate to the sub pipeline.
@@ -60,13 +33,13 @@ impl Fork<()> {
     /// }))
     /// # }
     /// ```
-    pub fn when<P, B>(predicate: P, pipeline_builder: B) -> Fork<P>
-        where P: Send + Sync + Fn(&Request) -> bool,
-              B: FnOnce(&mut Pipeline)
+    pub fn when<P, B>(predicate: P, pipeline_builder: B) -> Fork
+        where B: FnOnce(&mut Pipeline),
+              P: Fn(&Request) -> bool + Send + Sync + 'static
     {
         let mut sub_pipeline = Pipeline::new();
         pipeline_builder(&mut sub_pipeline);
-        Fork(sub_pipeline, predicate)
+        Fork(sub_pipeline, Box::new(predicate))
     }
 
     /// Construct a new pipeline fork.
@@ -93,24 +66,30 @@ impl Fork<()> {
     ///
     /// #Panics
     /// Panics when passed an invalid path string. Path should be of the form `/hello/world`.
-    pub fn when_path<P, B>(path: P, pipeline_builder: B) -> Fork<Vec<String>>
-        where P: AsRef<str>,
-              B: FnOnce(&mut Pipeline)
+    pub fn when_path<P, B>(path: P, pipeline_builder: B) -> Fork
+        where B: FnOnce(&mut Pipeline),
+              P: AsRef<str>
     {
         let (segments, _, _) = parse_path(path.as_ref()).expect("Invalid path");
         let mut sub_pipeline = Pipeline::new();
         pipeline_builder(&mut sub_pipeline);
-        Fork(sub_pipeline, segments)
+        Fork(sub_pipeline, Box::new(move |req| slice_starts_with(&req.url.path, &segments)))
     }
+
 }
 
-impl <P> PipelineMiddleware for Fork<P>
-    where P: Send + Sync + ForkPredicate
+fn slice_starts_with<A, B>(input: &[A], prefix: &[B]) -> bool
+    where A: PartialEq<B>
 {
+    input.iter().zip(prefix).all(|(a, b)| a == b)
+}
+
+impl PipelineMiddleware for Fork {
+
     /// Invokes the sub pipeline when the predicate P returns **true** for the request.
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
-        let Fork(ref sub_pipeline, ref pred) = *self;
-        if pred.should_fork(req) {
+        let Fork(ref sub_pipeline, ref predicate) = *self;
+        if predicate(req) {
             sub_pipeline.handle(req)
         }
         else {
