@@ -1,11 +1,11 @@
-//! Simple pipelined request handler for the Iron framework. Inspired by similar
-//! APIs used in the new ASP.NET Core 1.0 framework, which in turn is inspired by
-//! Microsoft's OWIN implementation, node.js and other web frameworks.
+//! Simple pipelined request handler for the Iron framework. Inspired by similar APIs used in
+//! the new ASP.NET Core 1.0 framework, which in turn is inspired by Microsoft's OWIN implementation,
+//! node.js and other web frameworks.
 //!
 //! # About
 //!
-//! Under `iron-pipeline`, every request is sent through a daisy chain of
-//! _middlewares_, each of which may optionally:
+//! Under `iron-pipeline`, every request is sent through a daisy chain of _middlewares_, each of which may
+//! optionally:
 //!
 //! 1. Create and return a response
 //! 2. Modify the request
@@ -53,8 +53,7 @@
 //!
 //! # Usage
 //!
-//! This crate may be used by adding `iron-pipeline` to the dependencies
-//! in your project's `Cargo.toml`:
+//! This crate may be used by adding `iron-pipeline` to the dependencies in your project's `Cargo.toml`:
 //!
 //! ```toml
 //! [dependencies]
@@ -134,7 +133,7 @@ impl<T> PipelineMiddleware for T
 /// # }
 /// ```
 pub struct Pipeline {
-    middlewares: Vec<Box<PipelineMiddleware>>
+    middlewares: Vec<Box<PipelineMiddleware>>,
 }
 
 /// Handle used to invoke the next handler in a pipeline
@@ -187,7 +186,7 @@ impl Handler for Pipeline {
 pub enum Error {
     /// Raised if there are no further middlewares in the pipeline
     /// available to handle the request
-    NoHandler
+    NoHandler,
 }
 
 impl fmt::Display for Error {
@@ -199,7 +198,7 @@ impl fmt::Display for Error {
 impl error::Error for Error {
     fn description(&self) -> &'static str {
         match self {
-            &Error::NoHandler => "Missing handler"
+            &Error::NoHandler => "Missing handler",
         }
     }
 }

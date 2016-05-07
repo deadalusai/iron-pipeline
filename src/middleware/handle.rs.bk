@@ -19,8 +19,7 @@ use {PipelineMiddleware, PipelineNext};
 /// }))
 /// # }
 /// ```
-pub struct Handle<F>(pub F)
-    where F: Send + Sync + Fn(&mut Request) -> IronResult<Response>;
+pub struct Handle<F>(pub F) where F: Send + Sync + Fn(&mut Request) -> IronResult<Response>;
 
 impl<F> PipelineMiddleware for Handle<F>
     where F: Send + Sync + Fn(&mut Request) -> IronResult<Response>

@@ -48,9 +48,8 @@ fn slice_starts_with<A, B>(input: &[A], prefix: &[B]) -> bool
 
 impl Fork<()> {
     /// Construct a new pipeline fork.
-    /// The `predicate` is executed on every request and determines whether to delegate to the
-    /// sub pipeline. The `pipeline_builder` is used to construct the sub pipeline, and is
-    /// executed immediately.
+    /// The `predicate` is executed on every request and determines whether to delegate to the sub pipeline.
+    /// The `pipeline_builder` is used to construct the sub pipeline, and is executed immediately.
     ///
     /// # Examples
     /// A sub pipeline which handles all "Post" requests:
@@ -80,9 +79,8 @@ impl Fork<()> {
     }
 
     /// Construct a new pipeline fork.
-    /// The `path` is compared against the url path on every request and determines
-    /// whether to delegate to the sub pipeline. The `pipeline_builder` is used to
-    /// construct the sub pipeline, and is executed immediately.
+    /// The `path` is compared against the url path on every request and determines whether to delegate to the sub pipeline.
+    /// The `pipeline_builder` is used to construct the sub pipeline, and is executed immediately.
     ///
     /// # Examples
     /// A sub pipeline which handles all requests to "/api/v2":
@@ -123,8 +121,7 @@ impl<P> PipelineMiddleware for Fork<P>
         let Fork(ref sub_pipeline, ref predicate) = *self;
         if predicate.matches(req) {
             sub_pipeline.handle(req)
-        }
-        else {
+        } else {
             next.process(req)
         }
     }
