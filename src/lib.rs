@@ -1,36 +1,36 @@
 //! Simple pipelined request handler for the Iron framework. Inspired by similar APIs used in
 //! the new ASP.NET Core 1.0 framework, which in turn is inspired by Microsoft's OWIN implementation,
 //! node.js and other web frameworks.
-//! 
+//!
 //! # About
-//! 
+//!
 //! Under `iron-pipeline`, every request is sent through a daisy chain of _middlewares_, each of which may
 //! optionally:
-//! 
+//!
 //! 1. Create and return a response
 //! 2. Modify the request
-//! 3. Delegate to the next middleware in the pipeline 
+//! 3. Delegate to the next middleware in the pipeline
 //! 4. Modify the response created by another middleware
-//! 
+//!
 //! Unlike `Chain`, middleware is always executed in the order in which it was registered.
-//! 
+//!
 //! # Examples
 //!
-//! This example introduces two helper middlewares: `Handle` and `HandleNext`. 
-//! 
+//! This example introduces two helper middlewares: `Handle` and `HandleNext`.
+//!
 //! ```rust
 //! # extern crate iron;
 //! # extern crate iron_pipeline;
 //! use iron::prelude::*;
 //! use iron::status;
 //! use iron_pipeline::prelude::*;
-//! 
+//!
 //! # fn log_request(_: &Request) {}
 //! # fn log_response(_: &IronResult<Response>) {}
 //!
 //! fn main() {
 //!     let mut pipeline = Pipeline::new();
-//!     
+//!
 //!     // "Middleware" example
 //!     pipeline.add(HandleNext(|req, next| {
 //!         log_request(req);
@@ -38,7 +38,7 @@
 //!         log_response(&res);
 //!         res
 //!     }));
-//!     
+//!
 //!     // "Handler" example
 //!     pipeline.add(Handle(|req| {
 //!         Ok(Response::with((
@@ -52,16 +52,16 @@
 //! ```
 //!
 //! # Usage
-//! 
+//!
 //! This crate may be used by adding `iron-pipeline` to the dependencies in your project's `Cargo.toml`:
-//! 
+//!
 //! ```toml
 //! [dependencies]
 //! iron-pipeline = { git = "https://github.com/deadalusai/iron-pipeline" }
 //! ```
-//! 
+//!
 //! and the following to your crate root:
-//! 
+//!
 //! ```rust
 //! extern crate iron_pipeline;
 //! ```
@@ -74,7 +74,7 @@ pub mod middleware;
 /// Includes the Pipeline type and all middleware types in the `middleware` module.
 pub mod prelude {
     pub use ::{ Pipeline };
-    pub use middleware::fork::{ fork_when, fork_when_path };
+    pub use middleware::fork::{ Fork };
     pub use middleware::handle::{ Handle, HandleNext };
 }
 

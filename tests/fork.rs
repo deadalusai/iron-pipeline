@@ -13,7 +13,7 @@ fn test_fork_when() {
     
     // build a pipeline which forks on HEAD requests
     let mut pipeline = Pipeline::new();
-    pipeline.add(fork_when(|req| req.method == Method::Head, |posts| {
+    pipeline.add(Fork::when(|req| req.method == Method::Head, |posts| {
         posts.add(Handle(|_| {
             Ok(Response::with(status::Ok))
         }))
@@ -36,7 +36,7 @@ fn test_fork_when_path() {
     
     // build a pipeline which forks when the path starts with `/api/v2`
     let mut pipeline = Pipeline::new();
-    pipeline.add(fork_when_path("/api/v2", |v2| {
+    pipeline.add(Fork::when_path("/api/v2", |v2| {
         v2.add(Handle(|_| {
             Ok(Response::with(status::Ok))
         }))
