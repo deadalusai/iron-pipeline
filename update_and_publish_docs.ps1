@@ -14,7 +14,7 @@ function exec {
     }
 }
 
-function check-exitcode {
+function check-robocopy-exit-code {
     # Robocopy is a special snowflake and will return a non-zero exit code even when successful
     # Check the robocopy exit code for failures (see http://ss64.com/nt/robocopy-exit.html)
     if ($global:LastExitCode -eq 0) {
@@ -24,10 +24,10 @@ function check-exitcode {
         write-verbose 'One or more files were copied successfully'
     }
     if ($global:LastExitCode -band 2) {
-        write-warning 'Some Extra files or directories were detected. Examine the output log for details.'
+        write-warning 'Some extra files or directories were detected. Examine the output log for details.'
     }
     if ($global:LastExitCode -band 4) {
-        write-warning 'Some Mismatched files or directories were detected. Examine the output log. Housekeeping might be required.'
+        write-warning 'Some mismatched files or directories were detected. Examine the output log. Housekeeping might be required.'
     }
     if ($global:LastExitCode -band 8) {
         write-error 'Some files or directories could not be copied (copy errors occurred and the retry limit was exceeded).'
@@ -74,7 +74,7 @@ try {
     write-verbose 'Mirroring to gh-pages directory'
     exec { 
         robocopy /mir '.\target\doc' $gh_pages_path /xd .git /njh /ndl
-        (check-exitcode)
+        (check-robocopy-exit-code)
     }
 
     push-location $gh_pages_path
