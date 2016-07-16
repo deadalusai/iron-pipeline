@@ -1,9 +1,17 @@
 use iron::prelude::*;
 use iron::middleware::Handler;
 
-use url::parse_path;
+use url::Url;
 
 use {Pipeline, PipelineMiddleware, PipelineNext};
+
+fn parse_path(s: &str) -> Option<Vec<String>> {
+    let base = Url::parse("http://dummy.com").unwrap();
+    base.join(s).ok()
+        .and_then(|url| url.path_segments()
+                           .map(|split| split.map(|s| s.to_string())
+                                             .collect()))
+}
 
 /// Middleware which optionally delegates to a sub pipeline
 /// based on some predicate applied to each request.
@@ -35,8 +43,8 @@ pub struct ForkOnPath(Vec<String>);
 
 impl ForkPredicate for ForkOnPath {
     fn matches(&self, req: &Request) -> bool {
-        let ForkOnPath(ref segments) = *self;
-        slice_starts_with(&req.url.path, segments)
+        let ForkOnPath(ref path_segments) = *self;
+        slice_starts_with(&req.url.path, path_segments)
     }
 }
 
@@ -108,7 +116,7 @@ impl Fork<()> {
         where B: FnOnce(&mut Pipeline),
               P: AsRef<str>
     {
-        let (segments, _, _) = parse_path(path.as_ref()).expect("Invalid path");
+        let segments = parse_path(path.as_ref()).expect("Invalid path");
         let mut sub_pipeline = Pipeline::new();
         pipeline_builder(&mut sub_pipeline);
         Fork(sub_pipeline, ForkOnPath(segments))
