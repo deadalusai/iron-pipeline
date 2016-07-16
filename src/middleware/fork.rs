@@ -1,16 +1,19 @@
 use iron::prelude::*;
 use iron::middleware::Handler;
 
-use url::Url;
-
 use {Pipeline, PipelineMiddleware, PipelineNext};
 
-fn parse_path(s: &str) -> Option<Vec<String>> {
-    let base = Url::parse("http://dummy.com").unwrap();
-    base.join(s).ok()
-        .and_then(|url| url.path_segments()
-                           .map(|split| split.map(|s| s.to_string())
-                                             .collect()))
+fn parse_path(path: &str) -> Option<Vec<String>> {
+    if !path.starts_with("/") {
+        None
+    }
+    else {
+        let segments =
+            path.trim_left_matches("/")
+                .split("/").map(|s| s.to_string())
+                .collect();
+        Some(segments)
+    }
 }
 
 /// Middleware which optionally delegates to a sub pipeline

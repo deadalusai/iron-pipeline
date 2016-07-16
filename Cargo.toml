@@ -8,7 +8,6 @@ license = "MIT"
 
 [dependencies]
 iron = "0.3.0"
-url = "1.1.1"
 
 [dev-dependencies]
 iron-test = { git = "https://github.com/deadalusai/iron-test", default-features = false }

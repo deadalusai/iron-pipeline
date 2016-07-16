@@ -68,7 +68,6 @@
 //! ```
 
 extern crate iron;
-extern crate url;
 
 pub mod middleware;
 
