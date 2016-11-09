@@ -7,7 +7,7 @@ repository = "https://github.com/deadalusai/iron-pipeline"
 license = "MIT"
 
 [dependencies]
-iron = "0.3.0"
+iron = "0.4.0"
 
 [dev-dependencies]
 iron-test = { git = "https://github.com/deadalusai/iron-test", default-features = false }
