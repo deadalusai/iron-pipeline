@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -245,19 +246,15 @@
 <span id="202">202</span>
 <span id="203">203</span>
 <span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
 </pre><pre class='rust '>
-<span class='doccomment'>//! Simple pipelined request handler for the Iron framework. Inspired by similar APIs used in</span>
-<span class='doccomment'>//! the new ASP.NET Core 1.0 framework, which in turn is inspired by Microsoft&#39;s OWIN implementation,</span>
-<span class='doccomment'>//! node.js and other web frameworks.</span>
+<span class='doccomment'>//! Simple pipelined request handler for the Iron framework. Inspired by similar</span>
+<span class='doccomment'>//! APIs used in the new ASP.NET Core 1.0 framework, which in turn is inspired by</span>
+<span class='doccomment'>//! Microsoft&#39;s OWIN implementation, node.js and other web frameworks.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! # About</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! Under `iron-pipeline`, every request is sent through a daisy chain of _middlewares_, each of which may</span>
-<span class='doccomment'>//! optionally:</span>
+<span class='doccomment'>//! Under `iron-pipeline`, every request is sent through a daisy chain of</span>
+<span class='doccomment'>//! _middlewares_, each of which may optionally:</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! 1. Create and return a response</span>
 <span class='doccomment'>//! 2. Modify the request</span>
@@ -305,7 +302,8 @@
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! # Usage</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! This crate may be used by adding `iron-pipeline` to the dependencies in your project&#39;s `Cargo.toml`:</span>
+<span class='doccomment'>//! This crate may be used by adding `iron-pipeline` to the dependencies</span>
+<span class='doccomment'>//! in your project&#39;s `Cargo.toml`:</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```toml</span>
 <span class='doccomment'>//! [dependencies]</span>
@@ -319,15 +317,14 @@
 <span class='doccomment'>//! ```</span>
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>iron</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>url</span>;
 
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>middleware</span>;
 
 <span class='doccomment'>/// Includes the Pipeline type and all middleware types in the `middleware` module.</span>
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>prelude</span> {
-    <span class='kw'>pub</span> <span class='kw'>use</span> ::{ <span class='ident'>Pipeline</span> };
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>middleware</span>::<span class='ident'>fork</span>::{ <span class='ident'>Fork</span> };
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>middleware</span>::<span class='ident'>handle</span>::{ <span class='ident'>Handle</span>, <span class='ident'>HandleNext</span> };
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>Pipeline</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>middleware</span>::<span class='ident'>fork</span>::<span class='ident'>Fork</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>middleware</span>::<span class='ident'>handle</span>::{<span class='ident'>Handle</span>, <span class='ident'>HandleNext</span>};
 }
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>error</span>;
@@ -335,7 +332,7 @@
 
 <span class='kw'>use</span> <span class='ident'>iron</span>::<span class='ident'>status</span>;
 <span class='kw'>use</span> <span class='ident'>iron</span>::<span class='ident'>prelude</span>::<span class='op'>*</span>;
-<span class='kw'>use</span> <span class='ident'>iron</span>::<span class='ident'>middleware</span>::{ <span class='ident'>Handler</span> };
+<span class='kw'>use</span> <span class='ident'>iron</span>::<span class='ident'>middleware</span>::<span class='ident'>Handler</span>;
 
 <span class='doccomment'>/// Trait which defines middleware within a pipeline.</span>
 <span class='doccomment'>/// Implementors of this trait must call `next.handle(...)` in order to pass</span>
@@ -346,7 +343,7 @@
 
 <span class='comment'>// NOTE: Implement PipelineMiddleware for all types which also implement Handler</span>
 
-<span class='kw'>impl</span> <span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>PipelineMiddleware</span> <span class='kw'>for</span> <span class='ident'>T</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>PipelineMiddleware</span> <span class='kw'>for</span> <span class='ident'>T</span>
     <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Handler</span>
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
@@ -391,7 +388,7 @@
 <span class='doccomment'>/// Handle used to invoke the next handler in a pipeline</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PipelineNext</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>Pipeline</span>, <span class='ident'>usize</span>);
 
-<span class='kw'>impl</span> <span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>PipelineNext</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>PipelineNext</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>process</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>req</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>PipelineNext</span>(<span class='ident'>pipeline</span>, <span class='ident'>idx</span>) <span class='op'>=</span> <span class='op'>*</span><span class='self'>self</span>;
         <span class='ident'>pipeline</span>.<span class='ident'>invoke_handler</span>(<span class='ident'>idx</span>, <span class='ident'>req</span>)
@@ -399,12 +396,9 @@
 }
 
 <span class='kw'>impl</span> <span class='ident'>Pipeline</span> {
-
     <span class='doccomment'>/// Construct a new, empty request pipeline.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>() <span class='op'>-&gt;</span> <span class='ident'>Pipeline</span> {
-        <span class='ident'>Pipeline</span> {
-            <span class='ident'>middlewares</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>()
-        }
+        <span class='ident'>Pipeline</span> { <span class='ident'>middlewares</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>() }
     }
 
     <span class='doccomment'>/// Append a middleware to the end of the pipeline</span>
@@ -439,7 +433,6 @@
 <span class='doccomment'>/// Errors which may be raised by the Pipeline itself</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Error</span> {
-
     <span class='doccomment'>/// Raised if there are no further middlewares in the pipeline</span>
     <span class='doccomment'>/// available to handle the request</span>
     <span class='ident'>NoHandler</span>
@@ -457,7 +450,8 @@
             <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>NoHandler</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Missing handler&quot;</span>
         }
     }
-}</pre>
+}
+</pre>
 </section>
     <section id='search' class="content hidden"></section>
 
@@ -481,6 +475,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -512,11 +508,9 @@
     <script>
         window.rootPath = "../../../";
         window.currentCrate = "iron_pipeline";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
-    
     <script defer src="../../../search-index.js"></script>
 </body>
 </html>

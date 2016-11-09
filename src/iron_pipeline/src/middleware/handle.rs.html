@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
 
     
     
@@ -109,7 +110,7 @@
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>iron</span>::<span class='ident'>prelude</span>::<span class='op'>*</span>;
 
-<span class='kw'>use</span> ::{ <span class='ident'>PipelineMiddleware</span>, <span class='ident'>PipelineNext</span> };
+<span class='kw'>use</span> {<span class='ident'>PipelineMiddleware</span>, <span class='ident'>PipelineNext</span>};
 
 <span class='doccomment'>/// Container for a middleware function which must directly handle the request.</span>
 <span class='doccomment'>///</span>
@@ -131,7 +132,7 @@
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Handle</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>(<span class='kw'>pub</span> <span class='ident'>F</span>)
     <span class='kw'>where</span> <span class='ident'>F</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span> <span class='op'>+</span> <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span>;
 
-<span class='kw'>impl</span> <span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>PipelineMiddleware</span> <span class='kw'>for</span> <span class='ident'>Handle</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>PipelineMiddleware</span> <span class='kw'>for</span> <span class='ident'>Handle</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>
     <span class='kw'>where</span> <span class='ident'>F</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span> <span class='op'>+</span> <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span>
 {
     <span class='kw'>fn</span> <span class='ident'>process</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>req</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>, _: <span class='ident'>PipelineNext</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span> {
@@ -143,7 +144,7 @@
 <span class='doccomment'>/// next middleware in the pipeline via `next.process(req)`, or create a response itself.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// # Examples</span>
-<span class='doccomment'>///   </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// ```rust</span>
 <span class='doccomment'>/// # extern crate iron;</span>
 <span class='doccomment'>/// # extern crate iron_pipeline;</span>
@@ -165,8 +166,8 @@
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>HandleNext</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>(<span class='kw'>pub</span> <span class='ident'>F</span>)
     <span class='kw'>where</span> <span class='ident'>F</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span> <span class='op'>+</span> <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>, <span class='ident'>PipelineNext</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span>;
 
-<span class='kw'>impl</span> <span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>PipelineMiddleware</span> <span class='kw'>for</span> <span class='ident'>HandleNext</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>F</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span> <span class='op'>+</span> <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>, <span class='ident'>PipelineNext</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span> 
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>PipelineMiddleware</span> <span class='kw'>for</span> <span class='ident'>HandleNext</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>
+    <span class='kw'>where</span> <span class='ident'>F</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span> <span class='op'>+</span> <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>, <span class='ident'>PipelineNext</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span>
 {
     <span class='kw'>fn</span> <span class='ident'>process</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>req</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>, <span class='ident'>next</span>: <span class='ident'>PipelineNext</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span> {
         (<span class='self'>self</span>.<span class='number'>0</span>)(<span class='ident'>req</span>, <span class='ident'>next</span>)
@@ -196,6 +197,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -227,11 +230,9 @@
     <script>
         window.rootPath = "../../../../";
         window.currentCrate = "iron_pipeline";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../../jquery.js"></script>
     <script src="../../../../main.js"></script>
-    
     <script defer src="../../../../search-index.js"></script>
 </body>
 </html>

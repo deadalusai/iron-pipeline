@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -43,18 +44,19 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>handle</a>::<wbr><a class='struct' href=''>Handle</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-75' class='srclink' href='../../../src/iron_pipeline/src/middleware/handle.rs.html#22-23' title='goto source code'>[src]</a></span></h1>
-<pre class='rust struct'>pub struct Handle&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span>(pub F);</pre><div class='docblock'><p>Container for a middleware function which must directly handle the request.</p>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-75' class='srclink' href='../../../src/iron_pipeline/src/middleware/handle.rs.html#22-23' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Handle&lt;F&gt;(pub F) <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span>;</pre><div class='docblock'><p>Container for a middleware function which must directly handle the request.</p>
 
 <h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
 <pre class='rust rust-example-rendered'>
 <span class='ident'>pipeline</span>.<span class='ident'>add</span>(<span class='ident'>Handle</span>(<span class='op'>|</span><span class='ident'>req</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span><span class='op'>|</span> {
     <span class='prelude-val'>Ok</span>(<span class='ident'>Response</span>::<span class='ident'>with</span>((<span class='ident'>status</span>::<span class='prelude-val'>Ok</span>, <span class='string'>&quot;Hello from iron-pipeline&quot;</span>)))
 }))</pre>
-</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;F&gt; <a class='trait' href='../../../iron_pipeline/trait.PipelineMiddleware.html' title='iron_pipeline::PipelineMiddleware'>PipelineMiddleware</a> for <a class='struct' href='../../../iron_pipeline/middleware/handle/struct.Handle.html' title='iron_pipeline::middleware::handle::Handle'>Handle</a>&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span></code></h3><div class='impl-items'><h4 id='method.process' class='method'><code>fn <a href='../../../iron_pipeline/trait.PipelineMiddleware.html#method.process' class='fnname'>process</a>(&amp;self, req: &amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, _: <a class='struct' href='../../../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</code></h4>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;F&gt; <a class='trait' href='../../../iron_pipeline/trait.PipelineMiddleware.html' title='iron_pipeline::PipelineMiddleware'>PipelineMiddleware</a> for <a class='struct' href='../../../iron_pipeline/middleware/handle/struct.Handle.html' title='iron_pipeline::middleware::handle::Handle'>Handle</a>&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</span></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-79' class='srclink' href='../../../src/iron_pipeline/src/middleware/handle.rs.html#25-31' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.process' class='method'><span id='process.v' class='invisible'><code>fn <a href='../../../iron_pipeline/trait.PipelineMiddleware.html#tymethod.process' class='fnname'>process</a>(&amp;self, req: &amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, _: <a class='struct' href='../../../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</code></span></h4>
 </div></section>
     <section id='search' class="content hidden"></section>
 
@@ -78,6 +80,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -109,11 +113,9 @@
     <script>
         window.rootPath = "../../../";
         window.currentCrate = "iron_pipeline";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
-    
     <script defer src="../../../search-index.js"></script>
 </body>
 </html>

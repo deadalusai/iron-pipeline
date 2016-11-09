@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -43,16 +44,18 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>fork</a>::<wbr><a class='struct' href=''>Fork</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-14' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#10' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-15' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#21' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Fork&lt;P&gt;(_, _);</pre><div class='docblock'><p>Middleware which optionally delegates to a sub pipeline
 based on some predicate applied to each request.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h3><div class='impl-items'><h4 id='method.when' class='method'><code>fn <a href='#method.when' class='fnname'>when</a>&lt;P, B&gt;(predicate: P, pipeline_builder: B) -&gt; <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;ForkOnFn&lt;P&gt;&gt; <span class='where'>where B: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(&amp;mut <a class='struct' href='../../../iron_pipeline/struct.Pipeline.html' title='iron_pipeline::Pipeline'>Pipeline</a>), P: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;<a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a></span></code></h4>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-50' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#60-127' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.when' class='method'><span id='when.v' class='invisible'><code>fn <a href='#method.when' class='fnname'>when</a>&lt;P, B&gt;(predicate: P, pipeline_builder: B) -&gt; <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;ForkOnFn&lt;P&gt;&gt; <span class='where'>where B: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(&amp;mut <a class='struct' href='../../../iron_pipeline/struct.Pipeline.html' title='iron_pipeline::Pipeline'>Pipeline</a>), P: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;<a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a></span></code></span></h4>
 <div class='docblock'><p>Construct a new pipeline fork.
-The <code>predicate</code> is executed on every request and determines whether to delegate to the sub pipeline.
-The <code>pipeline_builder</code> is used to construct the sub pipeline, and is executed immediately.</p>
+The <code>predicate</code> is executed on every request and determines whether to delegate to the
+sub pipeline. The <code>pipeline_builder</code> is used to construct the sub pipeline, and is
+executed immediately.</p>
 
 <h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
 <p>A sub pipeline which handles all &quot;Post&quot; requests:</p>
@@ -63,10 +66,11 @@ The <code>pipeline_builder</code> is used to construct the sub pipeline, and is 
         <span class='prelude-val'>Ok</span>(<span class='ident'>Response</span>::<span class='ident'>with</span>(<span class='string'>&quot;Hello from iron-pipeline&quot;</span>))
     }));
 }))</pre>
-</div><h4 id='method.when_path' class='method'><code>fn <a href='#method.when_path' class='fnname'>when_path</a>&lt;P, B&gt;(path: P, pipeline_builder: B) -&gt; <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;ForkOnPath&gt; <span class='where'>where B: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(&amp;mut <a class='struct' href='../../../iron_pipeline/struct.Pipeline.html' title='iron_pipeline::Pipeline'>Pipeline</a>), P: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;</span></code></h4>
+</div><h4 id='method.when_path' class='method'><span id='when_path.v' class='invisible'><code>fn <a href='#method.when_path' class='fnname'>when_path</a>&lt;P, B&gt;(path: P, pipeline_builder: B) -&gt; <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;ForkOnPath&gt; <span class='where'>where B: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(&amp;mut <a class='struct' href='../../../iron_pipeline/struct.Pipeline.html' title='iron_pipeline::Pipeline'>Pipeline</a>), P: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;</span></code></span></h4>
 <div class='docblock'><p>Construct a new pipeline fork.
-The <code>path</code> is compared against the url path on every request and determines whether to delegate to the sub pipeline.
-The <code>pipeline_builder</code> is used to construct the sub pipeline, and is executed immediately.</p>
+The <code>path</code> is compared against the url path on every request and determines
+whether to delegate to the sub pipeline. The <code>pipeline_builder</code> is used to
+construct the sub pipeline, and is executed immediately.</p>
 
 <h1 id='examples-1' class='section-header'><a href='#examples-1'>Examples</a></h1>
 <p>A sub pipeline which handles all requests to &quot;/api/v2&quot;:</p>
@@ -80,8 +84,10 @@ The <code>pipeline_builder</code> is used to construct the sub pipeline, and is 
 
 <h1 id='panics' class='section-header'><a href='#panics'>Panics</a></h1>
 <p>Panics when passed an invalid path string. Path should be of the form <code>/hello/world</code>.</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;P&gt; <a class='trait' href='../../../iron_pipeline/trait.PipelineMiddleware.html' title='iron_pipeline::PipelineMiddleware'>PipelineMiddleware</a> for <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;P&gt; <span class='where'>where P: ForkPredicate + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a></span></code></h3><div class='impl-items'><h4 id='method.process' class='method'><code>fn <a href='../../../iron_pipeline/trait.PipelineMiddleware.html#method.process' class='fnname'>process</a>(&amp;self, req: &amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, next: <a class='struct' href='../../../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</code></h4>
-</div></section>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;P&gt; <a class='trait' href='../../../iron_pipeline/trait.PipelineMiddleware.html' title='iron_pipeline::PipelineMiddleware'>PipelineMiddleware</a> for <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>&lt;P&gt; <span class='where'>where P: ForkPredicate + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a></span></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-64' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#129-142' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.process' class='method'><span id='process.v' class='invisible'><code>fn <a href='../../../iron_pipeline/trait.PipelineMiddleware.html#tymethod.process' class='fnname'>process</a>(&amp;self, req: &amp;mut <a class='struct' href='http://ironframework.io/core/iron/iron/request/struct.Request.html' title='iron::request::Request'>Request</a>, next: <a class='struct' href='../../../iron_pipeline/struct.PipelineNext.html' title='iron_pipeline::PipelineNext'>PipelineNext</a>) -&gt; <a class='type' href='http://ironframework.io/core/iron/iron/type.IronResult.html' title='iron::IronResult'>IronResult</a>&lt;<a class='struct' href='http://ironframework.io/core/iron/iron/response/struct.Response.html' title='iron::response::Response'>Response</a>&gt;</code></span></h4>
+<div class='docblock'><p>Invokes the sub pipeline when the predicate P returns <strong>true</strong> for the request.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -104,6 +110,8 @@ The <code>pipeline_builder</code> is used to construct the sub pipeline, and is 
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -135,11 +143,9 @@ The <code>pipeline_builder</code> is used to construct the sub pipeline, and is 
     <script>
         window.rootPath = "../../../";
         window.currentCrate = "iron_pipeline";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
-    
     <script defer src="../../../search-index.js"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,17 +44,17 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>iron_pipeline</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-0' class='srclink' href='../src/iron_pipeline/src/lib.rs.html#1-208' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>Simple pipelined request handler for the Iron framework. Inspired by similar APIs used in
-the new ASP.NET Core 1.0 framework, which in turn is inspired by Microsoft&#39;s OWIN implementation,
-node.js and other web frameworks.</p>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/iron_pipeline/src/lib.rs.html#1-204' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Simple pipelined request handler for the Iron framework. Inspired by similar
+APIs used in the new ASP.NET Core 1.0 framework, which in turn is inspired by
+Microsoft&#39;s OWIN implementation, node.js and other web frameworks.</p>
 
 <h1 id='about' class='section-header'><a href='#about'>About</a></h1>
-<p>Under <code>iron-pipeline</code>, every request is sent through a daisy chain of <em>middlewares</em>, each of which may
-optionally:</p>
+<p>Under <code>iron-pipeline</code>, every request is sent through a daisy chain of
+<em>middlewares</em>, each of which may optionally:</p>
 
 <ol>
 <li>Create and return a response</li>
@@ -96,7 +97,8 @@ optionally:</p>
 }</pre>
 
 <h1 id='usage' class='section-header'><a href='#usage'>Usage</a></h1>
-<p>This crate may be used by adding <code>iron-pipeline</code> to the dependencies in your project&#39;s <code>Cargo.toml</code>:</p>
+<p>This crate may be used by adding <code>iron-pipeline</code> to the dependencies
+in your project&#39;s <code>Cargo.toml</code>:</p>
 
 <pre><code class="language-toml">[dependencies]
 iron-pipeline = { git = &quot;https://github.com/deadalusai/iron-pipeline&quot; }
@@ -108,61 +110,55 @@ iron-pipeline = { git = &quot;https://github.com/deadalusai/iron-pipeline&quot; 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>iron_pipeline</span>;</pre>
 </div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='middleware/index.html'
-                               title='iron_pipeline::middleware'>middleware</a></td>
-                        <td class='docblock short'>
-                             <p>Middleware for use in a <code>Pipeline</code>.</p>
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='prelude/index.html'
-                               title='iron_pipeline::prelude'>prelude</a></td>
-                        <td class='docblock short'>
-                             <p>Includes the Pipeline type and all middleware types in the <code>middleware</code> module.</p>
-                        </td>
-                    </tr>
-                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='middleware/index.html'
+                                  title='iron_pipeline::middleware'>middleware</a></td>
+                           <td class='docblock-short'>
+                                <p>Middleware for use in a <code>Pipeline</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='prelude/index.html'
+                                  title='iron_pipeline::prelude'>prelude</a></td>
+                           <td class='docblock-short'>
+                                <p>Includes the Pipeline type and all middleware types in the <code>middleware</code> module.</p>
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Pipeline.html'
-                               title='iron_pipeline::Pipeline'>Pipeline</a></td>
-                        <td class='docblock short'>
-                             <p>Iron middleware for implementing a simple forward-only pipeline.
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Pipeline.html'
+                                  title='iron_pipeline::Pipeline'>Pipeline</a></td>
+                           <td class='docblock-short'>
+                                <p>Iron middleware for implementing a simple forward-only pipeline.
 When a request is received each middleware is invoked in the order
 in which they were registered.</p>
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.PipelineNext.html'
-                               title='iron_pipeline::PipelineNext'>PipelineNext</a></td>
-                        <td class='docblock short'>
-                             <p>Handle used to invoke the next handler in a pipeline</p>
-                        </td>
-                    </tr>
-                </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.PipelineNext.html'
+                                  title='iron_pipeline::PipelineNext'>PipelineNext</a></td>
+                           <td class='docblock-short'>
+                                <p>Handle used to invoke the next handler in a pipeline</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Error.html'
-                               title='iron_pipeline::Error'>Error</a></td>
-                        <td class='docblock short'>
-                             <p>Errors which may be raised by the Pipeline itself</p>
-                        </td>
-                    </tr>
-                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Error.html'
+                                  title='iron_pipeline::Error'>Error</a></td>
+                           <td class='docblock-short'>
+                                <p>Errors which may be raised by the Pipeline itself</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.PipelineMiddleware.html'
-                               title='iron_pipeline::PipelineMiddleware'>PipelineMiddleware</a></td>
-                        <td class='docblock short'>
-                             <p>Trait which defines middleware within a pipeline.
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.PipelineMiddleware.html'
+                                  title='iron_pipeline::PipelineMiddleware'>PipelineMiddleware</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait which defines middleware within a pipeline.
 Implementors of this trait must call <code>next.handle(...)</code> in order to pass
 control to the next middleware in the pipeline.</p>
-                        </td>
-                    </tr>
-                </table></section>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -185,6 +181,8 @@ control to the next middleware in the pipeline.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -216,11 +214,9 @@ control to the next middleware in the pipeline.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "iron_pipeline";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

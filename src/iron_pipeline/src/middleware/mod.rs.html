@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
 
     
     
@@ -51,14 +52,16 @@
 <span id="8"> 8</span>
 <span id="9"> 9</span>
 <span id="10">10</span>
+<span id="11">11</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Middleware for use in a `Pipeline`.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! # A note on `iron::middleware::Handler`</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! All types which implement `iron::middleware::Handler` can also be used as iron-pipeline middleware.</span>
-<span class='doccomment'>//! However because the `Handler` trait does not understand the concept of &quot;next&quot; middleware,</span>
-<span class='doccomment'>//! it is generally only useful to put such handlers at the _end_ of a pipeline.</span>
+<span class='doccomment'>//! All types which implement `iron::middleware::Handler` can also be used</span>
+<span class='doccomment'>//! as iron-pipeline middleware. However because the `Handler` trait does</span>
+<span class='doccomment'>//! not understand the concept of &quot;next&quot; middleware, it is generally only</span>
+<span class='doccomment'>//! useful to put such handlers at the _end_ of a pipeline.</span>
 
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>fork</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>handle</span>;
@@ -86,6 +89,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -117,11 +122,9 @@
     <script>
         window.rootPath = "../../../../";
         window.currentCrate = "iron_pipeline";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../../jquery.js"></script>
     <script src="../../../../main.js"></script>
-    
     <script defer src="../../../../search-index.js"></script>
 </body>
 </html>
