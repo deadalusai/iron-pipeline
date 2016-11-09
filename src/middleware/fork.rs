@@ -47,7 +47,7 @@ pub struct ForkOnPath(Vec<String>);
 impl ForkPredicate for ForkOnPath {
     fn matches(&self, req: &Request) -> bool {
         let ForkOnPath(ref path_segments) = *self;
-        slice_starts_with(&req.url.path, path_segments)
+        slice_starts_with(&req.url.path(), path_segments)
     }
 }
 
