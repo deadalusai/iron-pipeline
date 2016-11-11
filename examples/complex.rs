@@ -6,7 +6,7 @@ use iron::status;
 use iron::middleware::{ Handler };
 
 use iron_pipeline::prelude::*;
-use iron_pipeline::{ PipelineMiddleware, PipelineNext };
+use iron_pipeline::{ Middleware, PipelineNext };
 
 fn log_request(req: &Request) {
     println!("{} {}", req.method, req.url);
@@ -79,14 +79,14 @@ fn request_has_header(req: &Request, header_name: &str, header_value: &[u8]) -> 
     }
 }
 
-/// Simple PipelineMiddleware which challenges all 
+/// Simple Middleware which challenges all 
 /// requests for the configured username and password
 struct WwwAuthenticate {
     username: &'static str,
     password: &'static str
 }
 
-impl PipelineMiddleware for WwwAuthenticate {
+impl Middleware for WwwAuthenticate {
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
         use iron::headers::{ Authorization, Basic };
         

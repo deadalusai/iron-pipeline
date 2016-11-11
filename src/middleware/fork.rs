@@ -1,7 +1,7 @@
 use iron::prelude::*;
 use iron::middleware::Handler;
 
-use {Pipeline, PipelineMiddleware, PipelineNext};
+use {Pipeline, Middleware, PipelineNext};
 
 fn parse_path(path: &str) -> Option<Vec<String>> {
     if !path.starts_with("/") {
@@ -126,7 +126,7 @@ impl Fork<()> {
     }
 }
 
-impl<P> PipelineMiddleware for Fork<P>
+impl<P> Middleware for Fork<P>
     where P: ForkPredicate + Sync + Send
 {
     /// Invokes the sub pipeline when the predicate P returns **true** for the request.

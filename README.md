@@ -20,12 +20,12 @@ optionally:
 4. Modify the response created by another middleware
 
 Unlike `Chain`, middleware is always executed in the exact order in which it was registered. Also unlike
-`Chain`, there is only one middleware trait: `PipelineMiddleware`.
+`Chain`, there is only one middleware trait: `Middleware`.
 
 
-# The PipelineMiddleware trait
+# The Middleware trait
 
-The `PipelineMiddleware` trait is implemented for any middleware you want to run in a pipeline.
+The `Middleware` trait is implemented for any middleware you want to run in a pipeline.
 
 The trait is nearly identical in behaviour to the `iron::middleware::Handler` trait as it accepts an `&mut Request` and returns
 an `IronResult<Response>`. However it also accepts a `PipelineNext` parameter, which allows it to optionally invoke the next
@@ -36,7 +36,7 @@ For example, a simple HTTPS redirect middleware:
 ```rust
 struct HttpsRedirect;
 
-impl PipelineMiddleware for HttpsRedirect {
+impl Middleware for HttpsRedirect {
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
         if req.url.scheme != "https" {
             // Redirect non-https requests to the https version of this endpoint
@@ -49,7 +49,7 @@ impl PipelineMiddleware for HttpsRedirect {
 }
 ```
 
-Additionally, `PipelineMiddleware` is automatically implemented for all types which implement `Handler`
+Additionally, `Middleware` is automatically implemented for all types which implement `Handler`
 so you can easily add other Iron-compatible handlers like `Router` to your pipeline.
 
 **Note:** Because the `Handler` trait cannot invoke the next middleware, it is 

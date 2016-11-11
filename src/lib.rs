@@ -88,13 +88,13 @@ use iron::middleware::Handler;
 /// Trait which defines middleware within a pipeline.
 /// Implementors of this trait must call `next.handle(...)` in order to pass
 /// control to the next middleware in the pipeline.
-pub trait PipelineMiddleware: Send + Sync {
+pub trait Middleware: Send + Sync {
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response>;
 }
 
-// NOTE: Implement PipelineMiddleware for all types which also implement Handler
+// NOTE: Implement Middleware for all types which also implement Handler
 
-impl<T> PipelineMiddleware for T
+impl<T> Middleware for T
     where T: Handler
 {
     #[inline]
@@ -119,9 +119,9 @@ impl<T> PipelineMiddleware for T
 /// # use iron::prelude::*;
 /// # use iron::status;
 /// # use iron_pipeline::prelude::*;
-/// # use iron_pipeline::{ PipelineMiddleware, PipelineNext };
+/// # use iron_pipeline::{ Middleware, PipelineNext };
 /// # struct MyCustomRequestPreprocessor;
-/// # impl PipelineMiddleware for MyCustomRequestPreprocessor {
+/// # impl Middleware for MyCustomRequestPreprocessor {
 /// #     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
 /// #         next.process(req)
 /// #     }
@@ -133,7 +133,7 @@ impl<T> PipelineMiddleware for T
 /// # }
 /// ```
 pub struct Pipeline {
-    middlewares: Vec<Box<PipelineMiddleware>>
+    middlewares: Vec<Box<Middleware>>
 }
 
 /// Handle used to invoke the next handler in a pipeline
@@ -154,7 +154,7 @@ impl Pipeline {
 
     /// Append a middleware to the end of the pipeline
     pub fn add<P>(&mut self, handler: P)
-        where P: PipelineMiddleware + 'static
+        where P: Middleware + 'static
     {
         self.middlewares.push(Box::new(handler));
     }

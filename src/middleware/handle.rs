@@ -1,6 +1,6 @@
 use iron::prelude::*;
 
-use {PipelineMiddleware, PipelineNext};
+use {Middleware, PipelineNext};
 
 /// Container for a middleware function which must directly handle the request.
 ///
@@ -22,7 +22,7 @@ use {PipelineMiddleware, PipelineNext};
 pub struct Handle<F>(pub F)
     where F: Send + Sync + Fn(&mut Request) -> IronResult<Response>;
 
-impl<F> PipelineMiddleware for Handle<F>
+impl<F> Middleware for Handle<F>
     where F: Send + Sync + Fn(&mut Request) -> IronResult<Response>
 {
     fn process(&self, req: &mut Request, _: PipelineNext) -> IronResult<Response> {
@@ -56,7 +56,7 @@ impl<F> PipelineMiddleware for Handle<F>
 pub struct HandleNext<F>(pub F)
     where F: Send + Sync + Fn(&mut Request, PipelineNext) -> IronResult<Response>;
 
-impl<F> PipelineMiddleware for HandleNext<F>
+impl<F> Middleware for HandleNext<F>
     where F: Send + Sync + Fn(&mut Request, PipelineNext) -> IronResult<Response>
 {
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
