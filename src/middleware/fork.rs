@@ -54,6 +54,10 @@ impl ForkPredicate for ForkOnPath {
 fn slice_starts_with<A, B>(input: &[A], prefix: &[B]) -> bool
     where A: PartialEq<B>
 {
+    if prefix.len() > input.len() { 
+        return false;
+    }
+
     input.iter().zip(prefix).all(|(a, b)| a == b)
 }
 
@@ -138,5 +142,39 @@ impl<P> Middleware for Fork<P>
         else {
             next.process(req)
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::slice_starts_with;
+
+    #[test]
+    fn slice_starts_with_detects_invalid_prefix() {
+        let input  = ['1', '2', '3'];
+        let prefix = ['9', '9', '9'];
+        assert_eq!(false, slice_starts_with(&input, &prefix));
+    }
+
+    #[test]
+    fn slice_starts_with_prefix_and_input_same_length() {
+        let input  = ['1', '2', '3'];
+        let prefix = ['1', '2', '3'];
+        assert_eq!(true, slice_starts_with(&input, &prefix));
+    }
+
+    #[test]
+    fn slice_starts_with_longer_input() {
+        let input  = ['1', '2', '3', '4'];
+        let prefix = ['1', '2', '3'];
+        assert_eq!(true, slice_starts_with(&input, &prefix));
+    }
+
+    #[test]
+    fn slice_starts_with_longer_prefix() {
+        let input  = ['1', '2', '3'];
+        let prefix = ['1', '2', '3', '4'];
+        assert_eq!(false, slice_starts_with(&input, &prefix));
     }
 }
