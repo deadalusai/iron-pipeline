@@ -3,7 +3,7 @@ use iron::middleware::Handler;
 
 use {Pipeline, Middleware, PipelineNext};
 
-fn parse_path(path: &str) -> Option<Vec<String>> {
+fn try_parse_path(path: &str) -> Option<Vec<String>> {
     if !path.starts_with("/") {
         None
     }
@@ -123,7 +123,7 @@ impl Fork<()> {
         where B: FnOnce(&mut Pipeline),
               P: AsRef<str>
     {
-        let segments = parse_path(path.as_ref()).expect("Invalid path");
+        let segments = try_parse_path(path.as_ref()).expect("Invalid path");
         let mut sub_pipeline = Pipeline::new();
         pipeline_builder(&mut sub_pipeline);
         Fork(sub_pipeline, ForkOnPath(segments))
@@ -147,6 +147,21 @@ impl<P> Middleware for Fork<P>
 
 #[cfg(test)]
 mod tests {
+
+    use super::try_parse_path;
+
+    #[test]
+    fn can_parse_path() {
+        let path = try_parse_path("/this/is/the/path").unwrap();
+        assert_eq!(path, vec!["this", "is", "the", "path"]);
+    }
+
+    #[test]
+    fn can_reject_path_without_leading_slash() {
+        let path = try_parse_path("this/is/the/path");
+        assert_eq!(path, None);
+    }
+
 
     use super::slice_starts_with;
 
