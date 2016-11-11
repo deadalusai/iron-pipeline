@@ -337,13 +337,13 @@
 <span class='doccomment'>/// Trait which defines middleware within a pipeline.</span>
 <span class='doccomment'>/// Implementors of this trait must call `next.handle(...)` in order to pass</span>
 <span class='doccomment'>/// control to the next middleware in the pipeline.</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>PipelineMiddleware</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span> {
+<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Middleware</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span> {
     <span class='kw'>fn</span> <span class='ident'>process</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>req</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Request</span>, <span class='ident'>next</span>: <span class='ident'>PipelineNext</span>) <span class='op'>-&gt;</span> <span class='ident'>IronResult</span><span class='op'>&lt;</span><span class='ident'>Response</span><span class='op'>&gt;</span>;
 }
 
-<span class='comment'>// NOTE: Implement PipelineMiddleware for all types which also implement Handler</span>
+<span class='comment'>// NOTE: Implement Middleware for all types which also implement Handler</span>
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>PipelineMiddleware</span> <span class='kw'>for</span> <span class='ident'>T</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>Middleware</span> <span class='kw'>for</span> <span class='ident'>T</span>
     <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Handler</span>
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
@@ -368,9 +368,9 @@
 <span class='doccomment'>/// # use iron::prelude::*;</span>
 <span class='doccomment'>/// # use iron::status;</span>
 <span class='doccomment'>/// # use iron_pipeline::prelude::*;</span>
-<span class='doccomment'>/// # use iron_pipeline::{ PipelineMiddleware, PipelineNext };</span>
+<span class='doccomment'>/// # use iron_pipeline::{ Middleware, PipelineNext };</span>
 <span class='doccomment'>/// # struct MyCustomRequestPreprocessor;</span>
-<span class='doccomment'>/// # impl PipelineMiddleware for MyCustomRequestPreprocessor {</span>
+<span class='doccomment'>/// # impl Middleware for MyCustomRequestPreprocessor {</span>
 <span class='doccomment'>/// #     fn process(&amp;self, req: &amp;mut Request, next: PipelineNext) -&gt; IronResult&lt;Response&gt; {</span>
 <span class='doccomment'>/// #         next.process(req)</span>
 <span class='doccomment'>/// #     }</span>
@@ -382,7 +382,7 @@
 <span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Pipeline</span> {
-    <span class='ident'>middlewares</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>PipelineMiddleware</span><span class='op'>&gt;&gt;</span>
+    <span class='ident'>middlewares</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Middleware</span><span class='op'>&gt;&gt;</span>
 }
 
 <span class='doccomment'>/// Handle used to invoke the next handler in a pipeline</span>
@@ -403,7 +403,7 @@
 
     <span class='doccomment'>/// Append a middleware to the end of the pipeline</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>add</span><span class='op'>&lt;</span><span class='ident'>P</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>handler</span>: <span class='ident'>P</span>)
-        <span class='kw'>where</span> <span class='ident'>P</span>: <span class='ident'>PipelineMiddleware</span> <span class='op'>+</span> <span class='lifetime'>&#39;static</span>
+        <span class='kw'>where</span> <span class='ident'>P</span>: <span class='ident'>Middleware</span> <span class='op'>+</span> <span class='lifetime'>&#39;static</span>
     {
         <span class='self'>self</span>.<span class='ident'>middlewares</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>handler</span>));
     }
