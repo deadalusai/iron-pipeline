@@ -1,3 +1,4 @@
+use iron;
 use iron::prelude::*;
 use iron::middleware::Handler;
 
@@ -53,18 +54,21 @@ pub struct Fork<P>(Pipeline, P);
 /// Internal trait used to determine if a request should
 /// branch to the sub-pipeline.
 #[doc(hidden)]
-pub trait ForkPredicate {
-    fn matches(&self, req: &Request) -> bool;
+pub trait ForkHandler {
+    fn should_fork(&self, req: &Request) -> bool;
+    fn modify_request(&self, _: &mut Request) {
+        // nop
+    }
 }
 
 /// Branch when the request matches the predicate P.
 #[doc(hidden)]
 pub struct ForkOnFn<P>(P);
 
-impl<P> ForkPredicate for ForkOnFn<P>
+impl<P> ForkHandler for ForkOnFn<P>
     where P: Fn(&Request) -> bool + Send + Sync
 {
-    fn matches(&self, req: &Request) -> bool {
+    fn should_fork(&self, req: &Request) -> bool {
         let ForkOnFn(ref pred) = *self;
         pred(req)
     }
@@ -74,10 +78,30 @@ impl<P> ForkPredicate for ForkOnFn<P>
 #[doc(hidden)]
 pub struct ForkOnPath(Vec<String>);
 
-impl ForkPredicate for ForkOnPath {
-    fn matches(&self, req: &Request) -> bool {
+pub struct OriginalUrl;
+impl iron::typemap::Key for OriginalUrl {
+    type Value = iron::Url;
+}
+
+impl ForkHandler for ForkOnPath {
+    fn should_fork(&self, req: &Request) -> bool {
         let ForkOnPath(ref path_segments) = *self;
         slice_starts_with(&req.url.path(), path_segments)
+    }
+
+    fn modify_request(&self, req: &mut Request) {
+        let ForkOnPath(ref path_segments) = *self;
+
+        // Strip the path prefix from the Url
+        let new_path = req.url.path()[path_segments.len()..].join("/");
+        let mut new_url = req.url.clone().into_generic_url();
+        new_url.set_path(&new_path);
+
+        // Make the original (root) URL accessible
+        req.extensions.entry::<OriginalUrl>().or_insert(req.url.clone());
+
+        // Overwrite the request Url
+        req.url = iron::Url::from_generic_url(new_url).unwrap();
     }
 }
 
@@ -161,12 +185,13 @@ impl Fork<()> {
 }
 
 impl<P> Middleware for Fork<P>
-    where P: ForkPredicate + Sync + Send
+    where P: ForkHandler + Sync + Send
 {
     /// Invokes the sub pipeline when the predicate P returns **true** for the request.
     fn process(&self, req: &mut Request, next: PipelineNext) -> IronResult<Response> {
-        let Fork(ref sub_pipeline, ref predicate) = *self;
-        if predicate.matches(req) {
+        let Fork(ref sub_pipeline, ref handler) = *self;
+        if handler.should_fork(req) {
+            handler.modify_request(req);
             sub_pipeline.handle(req)
         }
         else {
