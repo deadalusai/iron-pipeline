@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `prelude` mod in crate `iron_pipeline`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, prelude">
+    <meta name="description" content="API documentation for the Rust `OriginalUrl` struct in crate `iron_pipeline`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, OriginalUrl">
 
-    <title>iron_pipeline::prelude - Rust</title>
+    <title>iron_pipeline::middleware::fork::OriginalUrl - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
     
 
     
@@ -28,7 +28,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='../index.html'>iron_pipeline</a></p><script>window.sidebarCurrent = {name: 'prelude', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+        <p class='location'><a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>fork</a></p><script>window.sidebarCurrent = {name: 'OriginalUrl', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,15 +42,16 @@
         </form>
     </nav>
 
-    <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>iron_pipeline</a>::<wbr><a class='mod' href=''>prelude</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>iron_pipeline</a>::<wbr><a href='../index.html'>middleware</a>::<wbr><a href='index.html'>fork</a>::<wbr><a class='struct' href=''>OriginalUrl</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-118' class='srclink' href='../../src/iron_pipeline/src/lib.rs.html#75-79' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>Includes the Pipeline type and all middleware types in the <code>middleware</code> module.</p>
-</div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
-<table><tr><td><code>pub use <a class='struct' href='../../iron_pipeline/struct.Pipeline.html' title='iron_pipeline::Pipeline'>Pipeline</a>;</code></td></tr><tr><td><code>pub use middleware::fork::<a class='struct' href='../../iron_pipeline/middleware/fork/struct.Fork.html' title='iron_pipeline::middleware::fork::Fork'>Fork</a>;</code></td></tr><tr><td><code>pub use middleware::handle::{<a class='struct' href='../../iron_pipeline/middleware/handle/struct.Handle.html' title='iron_pipeline::middleware::handle::Handle'>Handle</a>, <a class='struct' href='../../iron_pipeline/middleware/handle/struct.HandleNext.html' title='iron_pipeline::middleware::handle::HandleNext'>HandleNext</a>};</code></td></tr></table></section>
+               </span><a id='src-51' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#81' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct OriginalUrl;</pre><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl Key for <a class='struct' href='../../../iron_pipeline/middleware/fork/struct.OriginalUrl.html' title='iron_pipeline::middleware::fork::OriginalUrl'>OriginalUrl</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-53' class='srclink' href='../../../src/iron_pipeline/src/middleware/fork.rs.html#82-84' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Value' class='type'><span id='Value.t' class='invisible'><code>type <a href='#associatedtype.Value' class='type'>Value</a> = <a class='struct' href='http://ironframework.io/core/iron/iron/request/url/struct.Url.html' title='iron::request::url::Url'>Url</a></code></span></h4>
+<div class='docblock'><p>The value type associated with this key type.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -104,11 +105,11 @@
     
 
     <script>
-        window.rootPath = "../../";
+        window.rootPath = "../../../";
         window.currentCrate = "iron_pipeline";
     </script>
-    <script src="../../jquery.js"></script>
-    <script src="../../main.js"></script>
-    <script defer src="../../search-index.js"></script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
 </body>
 </html>
