@@ -1,19 +1,49 @@
 use iron::prelude::*;
 use iron::middleware::Handler;
 
+use std::error;
+use std::fmt;
+
 use {Pipeline, Middleware, PipelineNext};
 
-fn try_parse_path(path: &str) -> Option<Vec<String>> {
+// Track errors parsing fork paths
+#[derive(Debug, PartialEq)]
+enum ParsePathError {
+    NoLeadingSlash,
+    PathEmpty
+}
+
+impl fmt::Display for ParsePathError {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        write!(fmt, "{}", error::Error::description(self))
+    }
+}
+
+impl error::Error for ParsePathError {
+    fn description(&self) -> &'static str {
+        match *self {
+            ParsePathError::NoLeadingSlash => "Path must start with /",
+            ParsePathError::PathEmpty      => "Path cannot be empty"
+        }
+    }
+}
+
+fn parse_path(path: &str) -> Result<Vec<String>, ParsePathError> {
     if !path.starts_with("/") {
-        None
+        return Err(ParsePathError::NoLeadingSlash);
     }
-    else {
-        let segments =
-            path.trim_left_matches("/")
-                .split("/").map(|s| s.to_string())
-                .collect();
-        Some(segments)
+
+    let segments: Vec<_> =
+        path.trim_left_matches("/").split("/")
+            .filter(|s| s.len() > 0)
+            .map(|s| s.to_string())
+            .collect();
+
+    if segments.len() == 0 {
+        return Err(ParsePathError::PathEmpty);
     }
+
+    Ok(segments)
 }
 
 /// Middleware which optionally delegates to a sub pipeline
@@ -54,7 +84,7 @@ impl ForkPredicate for ForkOnPath {
 fn slice_starts_with<A, B>(input: &[A], prefix: &[B]) -> bool
     where A: PartialEq<B>
 {
-    if prefix.len() > input.len() { 
+    if prefix.len() > input.len() {
         return false;
     }
 
@@ -123,7 +153,7 @@ impl Fork<()> {
         where B: FnOnce(&mut Pipeline),
               P: AsRef<str>
     {
-        let segments = try_parse_path(path.as_ref()).expect("Invalid path");
+        let segments = parse_path(path.as_ref()).unwrap();
         let mut sub_pipeline = Pipeline::new();
         pipeline_builder(&mut sub_pipeline);
         Fork(sub_pipeline, ForkOnPath(segments))
@@ -148,20 +178,32 @@ impl<P> Middleware for Fork<P>
 #[cfg(test)]
 mod tests {
 
-    use super::try_parse_path;
+    use super::parse_path;
+    use super::ParsePathError;
 
     #[test]
-    fn can_parse_path() {
-        let path = try_parse_path("/this/is/the/path").unwrap();
+    fn parse_path_ok() {
+        let path = parse_path("/this/is/the/path").unwrap();
         assert_eq!(path, vec!["this", "is", "the", "path"]);
     }
 
     #[test]
-    fn can_reject_path_without_leading_slash() {
-        let path = try_parse_path("this/is/the/path");
-        assert_eq!(path, None);
+    fn parse_path_strips_empty_segments() {
+        let path = parse_path("/hello//world").unwrap();
+        assert_eq!(path, vec!["hello", "world"]);
     }
 
+    #[test]
+    fn parse_path_require_leading_slash() {
+        let path = parse_path("this/is/the/path");
+        assert_eq!(path, Err(ParsePathError::NoLeadingSlash));
+    }
+
+    #[test]
+    fn parse_path_require_non_empty() {
+        let path = parse_path("/");
+        assert_eq!(path, Err(ParsePathError::PathEmpty));
+    }
 
     use super::slice_starts_with;
 

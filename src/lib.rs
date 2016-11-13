@@ -197,8 +197,8 @@ impl fmt::Display for Error {
 
 impl error::Error for Error {
     fn description(&self) -> &'static str {
-        match self {
-            &Error::NoHandler => "Missing handler"
+        match *self {
+            Error::NoHandler => "Missing handler"
         }
     }
 }
