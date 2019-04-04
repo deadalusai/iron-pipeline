@@ -2,6 +2,8 @@ use iron;
 use iron::prelude::*;
 use iron::middleware::Handler;
 
+use url::Url;
+
 use std::error;
 use std::fmt;
 
@@ -94,7 +96,7 @@ impl ForkHandler for ForkOnPath {
 
         // Strip the path prefix from the Url
         let new_path = req.url.path()[path_segments.len()..].join("/");
-        let mut new_url = req.url.clone().into_generic_url();
+        let mut new_url: Url = req.url.clone().into();
         new_url.set_path(&new_path);
 
         // Make the original (root) URL accessible
